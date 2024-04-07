@@ -1,14 +1,17 @@
 // using promises 
 const asyncHandler = (requestHandler) => {
-    (res, req, next) => {
-        Promise.resolve(requestHandler(req, res, next))
-            .then(() => next()).catch((error) => {
-                console.log('Error: ', error);
-            })
-    }
-}
-
-export {asyncHandler};
+    return (req, res, next) => {
+      Promise.resolve(requestHandler(req, res, next))
+        .then(() => next())
+        .catch((error) => {
+          console.log('Error: ', error);
+          next(error); // Pass error to Express error handling middleware
+        });
+    };
+  };
+  
+  export { asyncHandler };
+  
 
 
 
